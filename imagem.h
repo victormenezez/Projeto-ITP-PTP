@@ -6,10 +6,10 @@ typedef struct{
   char tipo[2];
   int width, height; //altura e largura
   int RGB; //escala
-  unsigned char *pixel;
+  unsigned char *pixel; //vetor para os pixels alocado dinamicamente no imagem.c
 
 } Imagem;
 
-Imagem leitura(char *nomeArquivo);
+Imagem leitura(char *nomeArquivo); //funcao de leitura
 
 #endif
