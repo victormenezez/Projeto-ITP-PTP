@@ -1,0 +1,4 @@
+*.o
+teste.txt
+imagem.h.gch
+*.out
