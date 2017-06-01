@@ -7,12 +7,10 @@ int main(){
   char file[100];
   Imagem img;
 
-  printf("arquivo: ");
+  printf("Nome do arquivo: "); //solicita entrada do nome do arquivo
   scanf("%s", file);
   printf("%s\n", file);
-  img = leitura(file);
+  img = leitura(file); //atribui o retorno da funcao de leitura para o struct do main
 
-  int i;
-  
   return 0;
 }

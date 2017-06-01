@@ -5,7 +5,7 @@
 
 Imagem leitura(char *nomeArquivo){
 
-  FILE *arq, *test;
+  FILE *arq;
   Imagem img;
 
   arq = fopen(nomeArquivo, "r");
@@ -15,8 +15,8 @@ Imagem leitura(char *nomeArquivo){
   else{
     fscanf(arq, "%s %d %d %d", img.tipo, &img.width, &img.height, &img.RGB);
     img.pixel = malloc(sizeof(unsigned char)*(3 * img.width * img.height)); //alocacao dos pixels
-    fread(img.pixel, sizeof(unsigned char), img.width*img.height*3, arq); //leitura e armazenamento no vetor PIXEL
-    printf("Tipo: %s / Altura: %d / Largura: %d / Escala: %d\n", img.tipo, img.width, img.height, img.RGB); //teste para leitura do cabecalho
+    fread(img.pixel, sizeof(unsigned char), 3 * img.width * img.height, arq); //leitura e armazenamento no vetor PIXEL
+    printf("Tipo: %s / Altura: %d / Largura: %d / Escala: %d\n", img.tipo, img.width, img.height, img.RGB); //teste de confirmacao para leitura do cabecalho
   }
 
   fclose(arq);
