@@ -1,8 +1,17 @@
-Compile o arquivo imagem.h: gcc imagem.h -c
+O QUE FOI FEITO:
 
-Compile o arquivo steg.c: gcc steg.c imagem.o
+-Estrutra para leitura correta do tipo ppm (P6).
+-Modularização externa do programa.
+-Armazenamento da imagem em struct.
 
-Rode o executável
+O QUE NÃO FOI FEITO:
 
-Informe o arquivo com nome "tucano" para que o programa possa ler a imagem que estamos utilizando para testes.
+-Utilização do tipo de dado 'enum'
+
+COMPILAÇÃO:
+
+-Execute o comando 'make'
+-Rode o executável 'steg'
+-Informe o nome 'tucano' para o programa ler a imagem .ppm presente no projeto.
+
 
