@@ -33,6 +33,7 @@ Imagem leitura(char *nomeArquivo){
     }else if(strcmp(file_tipo, "BM") == 0){
 
       printf("==== Imagem BMP ====\n");
+      int i, j;
       unsigned int offset; //variável para armazenar o offset
       fseek(arq, 10, SEEK_SET); //fseek para o offset
       fread(&offset, sizeof(int), 1, arq); //armazena offset na variavel local
@@ -43,8 +44,17 @@ Imagem leitura(char *nomeArquivo){
       printf("%d\n", img.height);
       fseek(arq, offset, SEEK_SET); //fseek para pixels da imagem
 
-      img.pixel = malloc(sizeof(unsigned char)*(3 * img.width * img.height)); //alocacao dos pixels      
-      fread(img.pixel, sizeof(unsigned char), 3 * img.width * img.height, arq); //leitura e armazenamento no vetor PIXEL  
+      img.pixel = malloc(sizeof(unsigned char)*(3 * img.width * img.height)); //alocacao dos pixels
+
+      if((img.width*3) %4 == 0)
+        fread(img.pixel, sizeof(unsigned char), 3 * img.width * img.height, arq); //leitura e armazenamento no vetor PIXEL
+      else{
+        for(i = 0; i < img.height; i++){
+          for(j = 0; j < img.width*3; j++){
+            fread(&img.pixel[i+j], sizeof(unsigned char), 1, arq);
+          }
+        }
+      }
     }
   }
 

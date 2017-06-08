@@ -17,6 +17,6 @@ int main(){
   img = leitura(file);
 
   fwrite(img.pixel, sizeof(unsigned char), 3*img.width*img.height, arquivo);
-
+  
   return 0;
 }
