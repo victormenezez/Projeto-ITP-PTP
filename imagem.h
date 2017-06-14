@@ -12,4 +12,6 @@ typedef struct{
 
 Imagem leitura(char *nomeArquivo); //funcao de leitura
 
+void gravar(char *nomeArquivo, Imagem img);
+
 #endif

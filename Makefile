@@ -1,6 +1,6 @@
 all: steg
 
-deco: steg.o imagem.o
+steg: steg.o imagem.o
 	gcc steg.o imagem.o -o steg
 
 steg.o: steg.c
