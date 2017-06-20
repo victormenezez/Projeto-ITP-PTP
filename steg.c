@@ -14,7 +14,7 @@ int main(){
 
   img = leitura(file);
 
-  gravar("asdasdasd.txt", img);
+  gravar("testedeleitura.txt", img);
 
   printf("%d %d %d %d\n", img.pixel[0], img.pixel[1], img.pixel[2], img.pixel[3]);
   return 0;

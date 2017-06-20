@@ -22,17 +22,38 @@ Imagem leitura(char *nomeArquivo){
       printf("============= Imagem PPM P6 ============\n");
       Imagem img; //declaracao da struct de retorno
       strcpy(img.tipo, file_tipo);
-      fscanf(arq, "%d %d %d", &img.width, &img.height, &img.RGB); //leitura das informacoes do cabecalho
-      img.pixel = malloc(sizeof(unsigned char)*(3 * img.width * img.height)); //alocacao dos pixels
 
-      fread(img.pixel, sizeof(unsigned char), 3 * img.width * img.height, arq); //leitura e armazenamento no vetor PIXEL
+      //ignora comentários existentes no arquivo imagem
+      int comment = getc(arq);
+      while(comment == '#'){
+         while((comment = getc(arq)) != '\n');
+      }
+
+      //leitura das informacoes do cabecalho
+      fscanf(arq, "%d %d %d", &img.width, &img.height, &img.RGB); 
+
+      //verifica se a densidade realmente eh 255
+      if(img.RGB != 255){
+        printf("ERRO: a densidade do RGB deve ser 255. Sua imagem tem: %d\n", img.RGB);
+        exit(1);
+      }
+
+      //alocacao dos pixels
+      img.pixel = malloc(sizeof(unsigned char)*(3 * img.width * img.height));
+
+      //quebra linha para acessar os pixels
+      while (fgetc(arq) != '\n');
+
+      //leitura e armazenamento no vetor PIXEL
+      fread(img.pixel, sizeof(unsigned char), 3 * img.width * img.height, arq);
+      
       printf("Leitura da imagem PPM feita com sucesso!\n");
           
     } else if(strcmp(file_tipo, "BM") == 0){
 
       printf("============== Imagem BMP =============\n");
       int i, j, counter = 0; //variavel counter serve para ser incrementada a cada laço do for, assim o indice do vetor pixels sempre sera um novo
-      unsigned int offset; //variável para armazenar o offset
+      int offset; //variável para armazenar o offset
       fseek(arq, 10, SEEK_SET); //fseek para o offset
       fread(&offset, sizeof(int), 1, arq); //armazena offset na variavel local
       fseek(arq, 18, SEEK_SET); //fseek para largura da imagem
@@ -40,14 +61,18 @@ Imagem leitura(char *nomeArquivo){
       fread(&img.height, sizeof(int), 1, arq); //armazena altura
       fseek(arq, offset, SEEK_SET); //fseek para pixels da imagem
 
-      img.pixel = malloc(sizeof(unsigned char)*(3 * img.width * img.height)); //alocacao dos pixels
+      img.pixel = malloc(3 * img.width * img.height); //alocacao dos pixels
 
       if((img.width*3) %4 == 0){
 
-        fread(img.pixel, sizeof(unsigned char), (3 * img.width * img.height), arq); //leitura e armazenamento no vetor PIXEL
-        printf("Leitura da imagem BMP feita com sucesso!\n");
+        //leitura e armazenamento no vetor PIXEL
+        fread(img.pixel, sizeof(unsigned char), (3 * img.width * img.height), arq);
+        printf("Leitura da imagem BMP feita com sucesso! offset=%d\n", offset);
       
       } else {
+
+        //numero de bytes 0 adicionados em cada linha
+        int num_zeros = 4-((img.width*3)%4);
 
         //laço para percorrer cada linha e cada elemento de cada coluna da linha
         for(i = 1; i <= img.height; i++){
@@ -55,10 +80,10 @@ Imagem leitura(char *nomeArquivo){
             fread(&img.pixel[counter], sizeof(unsigned char), 1, arq);
             counter++; //incrementacao apos armazenamento no vetor pixels
           }
-          fseek(arq, (4-((img.width*3)%4)), SEEK_CUR); //pula os bytes 0 acrescentados para deixar a linha multipla de 4
+          fseek(arq, num_zeros, SEEK_CUR); //pula os bytes 0 acrescentados para deixar a linha multipla de 4
         }
 
-        printf("IMAGEM NÃO MULTIPLA ===== %d\n", (4-((img.width*3)%4)));
+        //printf("IMAGEM NÃO MULTIPLA ===== %d %d %d\n", num_zeros, img.width, img.height);
         printf("Leitura da imagem BMP feita com sucesso!\n");
 
       }
