@@ -12,6 +12,18 @@ typedef struct{
 
 Imagem leitura(char *nomeArquivo); //funcao de leitura
 
-void gravar(char *nomeArquivo, Imagem img);
+int *convertCharParaBinario(int indice); //retorna o binario de um char(8 bits)
+
+int convertBinarioParaDecimal(int *indice); //retorna um inteiro decimal de um vetor inteiro de bits
+
+int tamanhoMensagem(FILE *arquivo); //retorna um inteiro que indica o tamanho da mensagem em bytes
+
+void criarImagemCodificada(Imagem img); //realiza a copia da imagem codificada
+
+void codificarMensagem(FILE *arquivo, Imagem img); //realiza a codificacao da mensagem na imagem
+
+int codificar(char *imagem, char *mensagem); //realiza a leitura e a codificacao da mensagem
+
+void gravar(char *nomeArquivo, Imagem img); //grava os pixels e um novo arquivo(atualmente para testes)
 
 #endif

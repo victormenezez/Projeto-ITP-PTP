@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "imagem.h"
 
 Imagem leitura(char *nomeArquivo){
@@ -19,6 +20,7 @@ Imagem leitura(char *nomeArquivo){
 
     if(strcmp(file_tipo, "P6") == 0){
       
+      usleep(800000);
       printf("============= Imagem PPM P6 ============\n");
       Imagem img; //declaracao da struct de retorno
       strcpy(img.tipo, file_tipo);
@@ -47,6 +49,7 @@ Imagem leitura(char *nomeArquivo){
       //leitura e armazenamento no vetor PIXEL
       fread(img.pixel, sizeof(unsigned char), 3 * img.width * img.height, arq);
       
+      usleep(300000);
       printf("Leitura da imagem PPM feita com sucesso!\n");
           
     } else if(strcmp(file_tipo, "BM") == 0){
@@ -61,7 +64,7 @@ Imagem leitura(char *nomeArquivo){
       fread(&img.height, sizeof(int), 1, arq); //armazena altura
       fseek(arq, offset, SEEK_SET); //fseek para pixels da imagem
 
-      img.pixel = malloc(3 * img.width * img.height); //alocacao dos pixels
+      img.pixel = malloc(sizeof(unsigned char)*(3 * img.width * img.height)); //alocacao dos pixels
 
       if((img.width*3) %4 == 0){
 
@@ -84,7 +87,7 @@ Imagem leitura(char *nomeArquivo){
         }
 
         //printf("IMAGEM NÃO MULTIPLA ===== %d %d %d\n", num_zeros, img.width, img.height);
-        printf("Leitura da imagem BMP feita com sucesso!\n");
+        printf("Leitura da imagem BMP feita com sucesso!%d %d %d %d\n", offset, num_zeros, img.width, img.height);
 
       }
     }
@@ -101,5 +104,4 @@ void gravar(char *nomeArquivo, Imagem img){
   arq = fopen(nomeArquivo, "w");
 
   fwrite(img.pixel, sizeof(unsigned char), 3*img.width*img.height, arq);
-
 }
