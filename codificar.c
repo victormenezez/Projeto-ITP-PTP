@@ -41,7 +41,7 @@ int convertBinarioParaDecimal(int *indice){
 void criarImagemCodificada(Imagem img){
 	FILE *copia_imagem_ppm;
 
-	copia_imagem_ppm = fopen("imagem-codificada.ppm", "w+");
+	copia_imagem_ppm = fopen("copias/imagem-codificada.ppm", "w+");
 	fprintf(copia_imagem_ppm, "P6\n");
 	fprintf(copia_imagem_ppm, "%d %d\n", img.width, img.height);
 	fprintf(copia_imagem_ppm, "255\n");
@@ -98,7 +98,7 @@ int codificar(char *imagem, char *mensagem){
 	arq_mensagem = fopen(mensagem, "rb");
 	Imagem img;
 	if(arq_mensagem == NULL){
-		printf("\nErro na abertura dos arquivos. Verifique se o nome está correto, ou se os arquivos correspondem aos requisitos.\n");
+		printf("\nErro na abertura dos arquivos. Verifique se o nome/caminho está correto, ou se os arquivos correspondem aos requisitos.\n");
 		exit(1);
 	} else {
 		img = leitura(imagem);
