@@ -5,8 +5,6 @@
 #include "imagem.h"
 
 void decodificarMensagem(Imagem img, char *saida){
-	//int tamanho_mensagem = tamanhoMensagem(arquivo); //atribui o tamanho, em bytes, da mensagem
-	//int tamanho_imagem = 3 * img.width * img.height; //atribui o tamanho, em bytes, da imagem
 	usleep(800000);
 	printf("Decodificando sua mensagem...\n\n");
 
@@ -51,17 +49,10 @@ void decodificarMensagem(Imagem img, char *saida){
 	}
 }
 
-int decodificarPPM(char *imagem, char *saida){
-	// FILE *arq_imagem;
-	// arq_imagem = fopen(imagem, "rb");
+int decodificar(char *imagem, char *saida){
 	Imagem img;
-	// if(arq_mensagem == NULL){
-	// 	printf("\nErro na abertura dos arquivos. Verifique se o nome está correto, ou se os arquivos correspondem aos requisitos.\n");
-	// 	exit(1);
-	// } else {
-		img = leitura(imagem);
-		decodificarMensagem(img, saida);
-		gravar("testeleitura.txt", img);
-	// }
+	img = leitura(imagem);
+	decodificarMensagem(img, saida);
+	gravar("testeleitura.txt", img);
 	return 0;
 }

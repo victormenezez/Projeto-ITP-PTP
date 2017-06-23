@@ -71,7 +71,6 @@ Imagem leitura(char *nomeArquivo){
       for(i = img.height; i >= 1; i--){
         for(j = 1; j <= (img.width*3); j++){
           counter = (i-1)*(3*img.width)+j;
-          printf("%d\n", counter);
           fread(&img.pixel[counter], sizeof(unsigned char), 1, arq);
         }
         if((img.width*3) %4 != 0){

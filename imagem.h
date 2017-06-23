@@ -28,6 +28,6 @@ void gravar(char *nomeArquivo, Imagem img); //grava os pixels e um novo arquivo(
 
 void decodificarMensagem(Imagem img, char *saida); //decodifica a mensagem em uma imagem
 
-int decodificarPPM(char *imagem, char *saida); //realiza a chamada da funcao de decodificacao
+int decodificar(char *imagem, char *saida); //realiza a chamada da funcao de decodificacao
 
 #endif

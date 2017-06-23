@@ -78,21 +78,11 @@ void codificarMensagem(FILE *arquivo, Imagem img){
 				//converte e atribui o vetor de inteiro com os "bits"
 				pixel_binario = convertCharParaBinario(img.pixel[contador]);
 				//se o valor for diferente, ele altera o LSB para o bit da mensagem
-				// printf("%d(%d) ", img.pixel[contador], contador);
-				// for(j = 0; j < 8; j++){
-				// 	printf("%d", pixel_binario[j]);
-				// }
-				// printf("   %d   ", caractere_atual_binario[i]);
 				if(pixel_binario[7] != caractere_atual_binario[i]){
 					pixel_binario[7] = caractere_atual_binario[i];
 					//inserindo novo valor do pixel 
 					img.pixel[contador] = convertBinarioParaDecimal(pixel_binario);
 				}
-				// for(k = 0; k < 8; k++){
-				// 	printf("%d", pixel_binario[k]);
-				// }
-				// printf(" (%d)%d", contador, img.pixel[contador]);
-				// printf("\n");
 				free(pixel_binario);
 				contador++;
 			}
@@ -116,7 +106,7 @@ int codificar(char *imagem, char *mensagem){
 		gravar("testeleitura.txt", img);
 	}
 	usleep(500000);
-	printf("Codificação realizada com sucesso. Verifique a imagem 'imagem-copia.ppm'.\n");
+	printf("Codificação realizada com sucesso. Verifique a imagem 'imagem-codificada.ppm'.\n");
 	fclose(arq_mensagem);
 	return 0;
 }
