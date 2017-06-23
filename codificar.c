@@ -30,25 +30,18 @@ int *convertCharParaBinario(int indice){
 }
 
 int convertBinarioParaDecimal(int *indice){
-	int decimal = 0, i, j = 7, k;
-	// for(k = 0; k < 8; k++){
-	// 	printf("%d", indice[k]);
-	// }
-	//printf("  ");
+	int decimal = 0, i, j = 7;
 	for(i = 0; i < 8; i++){
 		decimal += indice[i] * pow(2, j);
-		//printf("%d * %.0f|", indice[i], pow(2, j));
-		//printf("%d + ", decimal);
 		j--;
 	}
-	//printf("\n");
 	return decimal;
 }
 
 void criarImagemCodificada(Imagem img){
 	FILE *copia_imagem_ppm;
 
-	copia_imagem_ppm = fopen("imagem-codificada.ppm", "ab+");
+	copia_imagem_ppm = fopen("imagem-codificada.ppm", "w+");
 	fprintf(copia_imagem_ppm, "P6\n");
 	fprintf(copia_imagem_ppm, "%d %d\n", img.width, img.height);
 	fprintf(copia_imagem_ppm, "255\n");
@@ -127,10 +120,3 @@ int codificar(char *imagem, char *mensagem){
 	fclose(arq_mensagem);
 	return 0;
 }
-
-
-// se mensagem[i] == 1
-// 		pixel[i] = pixel[i]|1;
-// 		 00110100
-// 		+00000001
-// 		 00110101

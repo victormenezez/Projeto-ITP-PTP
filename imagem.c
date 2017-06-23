@@ -55,7 +55,7 @@ Imagem leitura(char *nomeArquivo){
     } else if(strcmp(file_tipo, "BM") == 0){
 
       printf("============== Imagem BMP =============\n");
-      int i, j, counter = 0; //variavel counter serve para ser incrementada a cada laço do for, assim o indice do vetor pixels sempre sera um novo
+      int i, j, counter; //variavel counter serve para ser incrementada a cada laço do for, assim o indice do vetor pixels sempre sera um novo
       int offset; //variável para armazenar o offset
       fseek(arq, 10, SEEK_SET); //fseek para o offset
       fread(&offset, sizeof(int), 1, arq); //armazena offset na variavel local
@@ -66,30 +66,43 @@ Imagem leitura(char *nomeArquivo){
 
       img.pixel = malloc(sizeof(unsigned char)*(3 * img.width * img.height)); //alocacao dos pixels
 
-      if((img.width*3) %4 == 0){
-
-        //leitura e armazenamento no vetor PIXEL
-        fread(img.pixel, sizeof(unsigned char), (3 * img.width * img.height), arq);
-        printf("Leitura da imagem BMP feita com sucesso! offset=%d\n", offset);
+      int num_zeros = 4-((img.width*3)%4);
       
-      } else {
-
-        //numero de bytes 0 adicionados em cada linha
-        int num_zeros = 4-((img.width*3)%4);
-
-        //laço para percorrer cada linha e cada elemento de cada coluna da linha
-        for(i = 1; i <= img.height; i++){
-          for(j = 1; j <= (img.width*3); j++){
-            fread(&img.pixel[counter], sizeof(unsigned char), 1, arq);
-            counter++; //incrementacao apos armazenamento no vetor pixels
-          }
+      for(i = img.height; i >= 1; i--){
+        for(j = 1; j <= (img.width*3); j++){
+          counter = (i-1)*(3*img.width)+j;
+          printf("%d\n", counter);
+          fread(&img.pixel[counter], sizeof(unsigned char), 1, arq);
+        }
+        if((img.width*3) %4 != 0){
           fseek(arq, num_zeros, SEEK_CUR); //pula os bytes 0 acrescentados para deixar a linha multipla de 4
         }
-
-        //printf("IMAGEM NÃO MULTIPLA ===== %d %d %d\n", num_zeros, img.width, img.height);
-        printf("Leitura da imagem BMP feita com sucesso!%d %d %d %d\n", offset, num_zeros, img.width, img.height);
-
       }
+      printf("Leitura da imagem BMP feita com sucesso!%d %d %d %d\n", offset, num_zeros, img.width, img.height);
+
+
+      // if((img.width*3) %4 == 0){
+
+      //   //leitura e armazenamento no vetor PIXEL
+      //   fread(img.pixel, sizeof(unsigned char), (3 * img.width * img.height), arq);
+      //   printf("Leitura da imagem BMP feita com sucesso! offset=%d\n", offset);
+      
+      // } else {
+
+      //   //numero de bytes 0 adicionados em cada linha
+
+      //   //laço para percorrer cada linha e cada elemento de cada coluna da linha
+      //   for(i = img.height; i >= 1; i--){
+      //     for(j = 1; j <= (img.width*3); j++){
+      //       counter = (i-1)*(3*img.width)+j;
+      //       fread(&img.pixel[counter], sizeof(unsigned char), 1, arq);
+      //     }
+      //     fseek(arq, num_zeros, SEEK_CUR); //pula os bytes 0 acrescentados para deixar a linha multipla de 4
+      //   }
+
+      //   //printf("IMAGEM NÃO MULTIPLA ===== %d %d %d\n", num_zeros, img.width, img.height);
+
+      // }
     }
   }
 

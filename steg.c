@@ -22,7 +22,7 @@ int main(int argc, char *argv[]){
 
 	//printf("%d %d %d %d\n", img.pixel[0], img.pixel[1], img.pixel[2], img.pixel[3]);
 	  
-	char *imagem, *mensagem;
+	char *imagem, *mensagem, *saida;
 
 	if(argc < 5){
 		printf("Número de argumentos inválido. Verifique.\n");
@@ -39,6 +39,41 @@ int main(int argc, char *argv[]){
 			}
 		} else if(strcmp(argv[1], "-d") == 0){
 			printf("MODO DECODIFICADOR\n");
+			if(strcmp(argv[2], "-s") == 0){
+				saida = argv[2];
+				if(strcmp(argv[3], "-f") == 0){
+					if(strcmp(argv[4], "ppm") == 0){
+						imagem = argv[5];
+						decodificarPPM(imagem, saida);
+					} else if(strcmp(argv[4], "bmp") == 0){
+						printf("DECODIFICADOR DE BMP\n");
+						exit(1);
+					}
+				} else {
+					printf("FORMATO DE IMAGEM NÃO INFORMADO!\n");
+					exit(1);
+				}
+			} else if(strcmp(argv[2], "-o") == 0){
+				if(strcmp(argv[4], "-f") == 0){
+					saida = argv[3];
+					if(strcmp(argv[5], "ppm") == 0){
+						imagem = argv[6];
+						decodificarPPM(imagem, saida);
+					} else if(strcmp(argv[5], "bmp") == 0){
+						printf("DECODIFICADOR DE BMP\n");
+						exit(1);
+					}
+				} else {
+					printf("FORMATO DE IMAGEM NÃO INFORMADO!\n");
+					exit(1);
+				}
+			} else {
+				printf("ARGUMENTOS INVÁLIDOS\n");
+				exit(1);
+			}
+		} else {
+			printf("ARGUMENTOS INVÁLIDOS\n");
+			exit(1);
 		}
 
 	}

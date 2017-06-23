@@ -26,4 +26,8 @@ int codificar(char *imagem, char *mensagem); //realiza a leitura e a codificacao
 
 void gravar(char *nomeArquivo, Imagem img); //grava os pixels e um novo arquivo(atualmente para testes)
 
+void decodificarMensagem(Imagem img, char *saida); //decodifica a mensagem em uma imagem
+
+int decodificarPPM(char *imagem, char *saida); //realiza a chamada da funcao de decodificacao
+
 #endif
