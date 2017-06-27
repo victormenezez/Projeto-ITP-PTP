@@ -22,25 +22,33 @@ void decodificarMensagem(Imagem img, char *saida){
 	}
 
 	while(byte_atual != 0){
-		caractere_atual_binario = (int *)calloc(8, sizeof(int)); 
+		caractere_atual_binario = (int *)calloc(8, sizeof(int));
 		
 		for(i = 0; i < 8; i++){
 			byte_atual_binario = (int *)calloc(8, sizeof(int)); 
+			//byte atual do vetor de pixel na posicao 'contador' que sera incrementada a cada laco do for
 			byte_atual_binario = convertCharParaBinario(img.pixel[contador]);
-			
+			//atribui o LSB do byte atual ao caractere. serao 8 interacoes para criar 1 byte(1 caractere)
 			caractere_atual_binario[i] = byte_atual_binario[7];
 
 			contador++;
 			free(byte_atual_binario);
 		}
-
+		//converte o caractere_atual_binario para decimal, assim teremos um valor utilizavel
 		caractere_atual_decimal = convertBinarioParaDecimal(caractere_atual_binario);
+		/*
+		Atribui o valor do caractere_atual_decimal para o byte_atual.
+		Essa atribuicao eh feita para que o while pare quando for encontrado um decimal igual a 0.
+		Isso significa o fim da mensagem.
+		*/
 		byte_atual = caractere_atual_decimal;
 
 		if(byte_atual != 0){
 			if(strcmp(saida, "-s") == 0){
+				//se a saida for a padrao, imprime na tela(ja convertido)
 				printf("%c", caractere_atual_decimal);
 			} else {
+				//senao, imprime no arquivo
 				fputc(caractere_atual_decimal, arquivo);
 			}
 		}
@@ -53,6 +61,6 @@ int decodificar(char *imagem, char *saida){
 	Imagem img;
 	img = leitura(imagem);
 	decodificarMensagem(img, saida);
-	gravar("testeleitura.txt", img);
+	//gravar("testeleitura.txt", img);
 	return 0;
 }

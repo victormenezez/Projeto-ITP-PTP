@@ -31,6 +31,9 @@ int *convertCharParaBinario(int indice){
 
 int convertBinarioParaDecimal(int *indice){
 	int decimal = 0, i, j = 7;
+	/*Como os bits estao armazenados de forma decrescente, a variavel 'j' foi criada.
+	Deste modo, ela sera decrementada a cada repeticao, assim o calculo do pow() eh feito
+	corretamente*/
 	for(i = 0; i < 8; i++){
 		decimal += indice[i] * pow(2, j);
 		j--;
@@ -42,10 +45,10 @@ void criarImagemCodificada(Imagem img){
 	FILE *copia_imagem_ppm;
 
 	copia_imagem_ppm = fopen("copias/imagem-codificada.ppm", "w+");
-	fprintf(copia_imagem_ppm, "P6\n");
-	fprintf(copia_imagem_ppm, "%d %d\n", img.width, img.height);
-	fprintf(copia_imagem_ppm, "255\n");
-	fwrite(img.pixel, sizeof(unsigned char), 3*img.width*img.height, copia_imagem_ppm);
+	fprintf(copia_imagem_ppm, "P6\n"); //tipo da imagem
+	fprintf(copia_imagem_ppm, "%d %d\n", img.width, img.height); //largura e altura respectivamente
+	fprintf(copia_imagem_ppm, "255\n"); //densidade
+	fwrite(img.pixel, sizeof(unsigned char), 3*img.width*img.height, copia_imagem_ppm); //pixels codificados da imagem
 	fclose(copia_imagem_ppm);
 }
 
@@ -89,6 +92,9 @@ void codificarMensagem(FILE *arquivo, Imagem img){
 			free(caractere_atual_binario);
 			caracteres_codificados++;
 		}
+		/*laço para adicionar, manualmente, o \0 no arquivo.
+		Assim a leitura eh interrompida quando o decodificador encontra-lo.
+		*/
 		for(i = 0; i < 8; i++){
 			int *pixel_binario = (int *)calloc(8, sizeof(int));
 			pixel_binario = convertCharParaBinario(img.pixel[contador]);
@@ -98,7 +104,7 @@ void codificarMensagem(FILE *arquivo, Imagem img){
 			contador++;
 		}
 	}
-	criarImagemCodificada(img);
+	criarImagemCodificada(img); //criando a imagem ja devidamente codificada
 }
 
 int codificar(char *imagem, char *mensagem){
@@ -111,10 +117,10 @@ int codificar(char *imagem, char *mensagem){
 	} else {
 		img = leitura(imagem);
 		codificarMensagem(arq_mensagem, img);
-		gravar("testeleitura.txt", img);
+		//gravar("testeleitura.txt", img);
 	}
 	usleep(500000);
-	printf("Codificação realizada com sucesso. Verifique a imagem 'imagem-codificada.ppm' dentro da pasta 'copias'.\n");
+	printf("Codificação realizada com sucesso. Verifique 'copias/imagem-codificada.ppm'.\n");
 	fclose(arq_mensagem);
 	return 0;
 }
