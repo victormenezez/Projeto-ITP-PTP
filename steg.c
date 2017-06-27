@@ -24,7 +24,7 @@ int main(int argc, char *argv[]){
 	  
 	char *imagem, *mensagem, *saida;
 
-	if(argc < 5){
+	if(argc < 4){
 		printf("Número de argumentos inválido. Verifique.\n");
 	} else {
 		if(strcmp(argv[1], "-e") == 0){
@@ -35,7 +35,7 @@ int main(int argc, char *argv[]){
 				imagem = argv[4];
 				codificar(imagem, mensagem);
 			} else {
-				printf("Agumentos inválidos. Verifique.\n");
+				printf("Argumentos inválidos. Verifique.\n");
 			}
 		} else if(strcmp(argv[1], "-d") == 0){
 			printf("MODO DECODIFICADOR\n");

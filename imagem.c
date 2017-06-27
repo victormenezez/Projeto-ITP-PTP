@@ -13,7 +13,7 @@ Imagem leitura(char *nomeArquivo){
   arq = fopen(nomeArquivo, "r");
 
   if(!arq)
-    printf("Não foi possivel abrir o arquivo %s  \n", nomeArquivo);
+    fprintf(stderr, "Não foi possivel abrir o arquivo %s\n", nomeArquivo);
   else{
     fscanf(arq, "%2s", file_tipo);
     file_tipo[2] = '\0';
@@ -36,7 +36,7 @@ Imagem leitura(char *nomeArquivo){
 
       //verifica se a densidade realmente eh 255
       if(img.RGB != 255){
-        printf("ERRO: a densidade do RGB deve ser 255. Sua imagem tem: %d\n", img.RGB);
+        fprintf(stderr, "ERRO: a densidade do RGB deve ser 255. Sua imagem tem: %d\n", img.RGB);
         exit(1);
       }
 
@@ -69,39 +69,15 @@ Imagem leitura(char *nomeArquivo){
       int num_zeros = 4-((img.width*3)%4);
       
       for(i = img.height; i >= 1; i--){
-        for(j = 1; j <= (img.width*3); j++){
-          counter = (i-1)*(3*img.width)+j;
+        for(j = 0; j < (img.width*3); j++){
+          counter = (i-1)*(3*img.width)+(2-j%3)+3*(j/3);
           fread(&img.pixel[counter], sizeof(unsigned char), 1, arq);
         }
         if((img.width*3) %4 != 0){
           fseek(arq, num_zeros, SEEK_CUR); //pula os bytes 0 acrescentados para deixar a linha multipla de 4
         }
       }
-      printf("Leitura da imagem BMP feita com sucesso!%d %d %d %d\n", offset, num_zeros, img.width, img.height);
-
-
-      // if((img.width*3) %4 == 0){
-
-      //   //leitura e armazenamento no vetor PIXEL
-      //   fread(img.pixel, sizeof(unsigned char), (3 * img.width * img.height), arq);
-      //   printf("Leitura da imagem BMP feita com sucesso! offset=%d\n", offset);
-      
-      // } else {
-
-      //   //numero de bytes 0 adicionados em cada linha
-
-      //   //laço para percorrer cada linha e cada elemento de cada coluna da linha
-      //   for(i = img.height; i >= 1; i--){
-      //     for(j = 1; j <= (img.width*3); j++){
-      //       counter = (i-1)*(3*img.width)+j;
-      //       fread(&img.pixel[counter], sizeof(unsigned char), 1, arq);
-      //     }
-      //     fseek(arq, num_zeros, SEEK_CUR); //pula os bytes 0 acrescentados para deixar a linha multipla de 4
-      //   }
-
-      //   //printf("IMAGEM NÃO MULTIPLA ===== %d %d %d\n", num_zeros, img.width, img.height);
-
-      // }
+      printf("Leitura da imagem BMP feita com sucesso!\n");
     }
   }
 

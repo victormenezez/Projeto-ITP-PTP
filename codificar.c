@@ -17,7 +17,7 @@ int *convertCharParaBinario(int indice){
 	int i = 7;
 	int *binario = (int *)calloc(8, sizeof(int));
 	if(binario == 0){
-		printf("Não foi possível alocar a memória para o inteiro com os bits\n");
+		fprintf(stderr, "Não foi possível alocar a memória para o inteiro com os bits\n");
 		exit(1);
 	}
 	while(indice > 0){
@@ -56,7 +56,7 @@ void codificarMensagem(FILE *arquivo, Imagem img){
 	printf("Sua mensagem possui %d bytes\nA imagem utilizada possui %d bytes\n\n", tamanho_mensagem, tamanho_imagem);
 
 	if(tamanho_mensagem * 8 > tamanho_imagem){
-		printf("Não é possível inserir a mensagem na imagem.\nEncerrando o programa...\n");
+		fprintf(stderr, "Não é possível inserir a mensagem na imagem.\nEncerrando o programa...\n");
 		exit(1);
 	} else {
 		int caracteres_codificados = 0, contador = 0;
@@ -67,7 +67,7 @@ void codificarMensagem(FILE *arquivo, Imagem img){
 			caractere_atual = fgetc(arquivo); //pegando o caractere da mensagem
 			
 			if(caractere_atual == EOF) //se for o final do arquivo, atribui o valor 3(correspondente a EOF na tabela ascii)
-				caractere_atual = 3;
+				caractere_atual = 0;
 
 			//converte o caractere atual para binario. Para fins de comparação
 			caractere_atual_binario = convertCharParaBinario(caractere_atual);
@@ -89,6 +89,14 @@ void codificarMensagem(FILE *arquivo, Imagem img){
 			free(caractere_atual_binario);
 			caracteres_codificados++;
 		}
+		for(i = 0; i < 8; i++){
+			int *pixel_binario = (int *)calloc(8, sizeof(int));
+			pixel_binario = convertCharParaBinario(img.pixel[contador]);
+			pixel_binario[7] = 0;
+			img.pixel[contador] = convertBinarioParaDecimal(pixel_binario);
+			free(pixel_binario);
+			contador++;
+		}
 	}
 	criarImagemCodificada(img);
 }
@@ -98,7 +106,7 @@ int codificar(char *imagem, char *mensagem){
 	arq_mensagem = fopen(mensagem, "rb");
 	Imagem img;
 	if(arq_mensagem == NULL){
-		printf("\nErro na abertura dos arquivos. Verifique se o nome/caminho está correto, ou se os arquivos correspondem aos requisitos.\n");
+		fprintf(stderr, "\nErro na abertura dos arquivos. Verifique se o nome/caminho está correto, ou se os arquivos correspondem aos requisitos.\n");
 		exit(1);
 	} else {
 		img = leitura(imagem);
@@ -106,7 +114,7 @@ int codificar(char *imagem, char *mensagem){
 		gravar("testeleitura.txt", img);
 	}
 	usleep(500000);
-	printf("Codificação realizada com sucesso. Verifique a imagem 'imagem-codificada.ppm'.\n");
+	printf("Codificação realizada com sucesso. Verifique a imagem 'imagem-codificada.ppm' dentro da pasta 'copias'.\n");
 	fclose(arq_mensagem);
 	return 0;
 }
